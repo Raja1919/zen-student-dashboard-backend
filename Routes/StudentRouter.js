@@ -9,7 +9,6 @@ router.post("/StudentDetails", async (req, res) => {
     name,
     email,
     password,
-    batch,
     phone,
     qualification,
     experience,
