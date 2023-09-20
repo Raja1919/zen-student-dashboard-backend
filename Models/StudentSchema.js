@@ -20,28 +20,7 @@ const studentSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-  },
-  qualification: {
-    type: String,
-  },
-  experience: {
-    type: String,
-  },
-  passing: {
-    type: String,
-  },
-  noticePeriod: {
-    type: String,
-  },
-  github: {
-    type: String,
-  },
-  portfolio: {
-    type: String,
-  },
-  resume: {
-    type: String,
-  },
+  }
 });
 
 module.exports = mongoose.model("Student", studentSchema, "students");
