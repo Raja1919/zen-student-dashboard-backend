@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
-router.post("/StudentDetails", async (req, res) => {
+router.post("/register", async (req, res) => {
   const {
     name,
     email,
@@ -45,73 +45,73 @@ router.post("/StudentDetails", async (req, res) => {
   }
 });
 
-router.get("/getAllStudents", async (req, res) => {
-  try {
-    const users = await User.find();
-    res.status(200).json({ students: users });
-  } catch (error) {
-    console.error("Error fetching students:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+// router.get("/getAllStudents", async (req, res) => {
+//   try {
+//     const users = await User.find();
+//     res.status(200).json({ students: users });
+//   } catch (error) {
+//     console.error("Error fetching students:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 
 
-router.get("/getStudent/:id", async (req, res) => {
-  const studentId = req.params.id;
+// router.get("/getStudent/:id", async (req, res) => {
+//   const studentId = req.params.id;
 
-  try {
-    const user = await User.findById(studentId);
+//   try {
+//     const user = await User.findById(studentId);
 
-    if (!user) {
-      return res.status(404).json({ message: "Student not found" });
-    }
+//     if (!user) {
+//       return res.status(404).json({ message: "Student not found" });
+//     }
 
-    // Return the student details
-    res.status(200).json({ student: user });
-  } catch (error) {
-    console.error("Error fetching student details:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+//     // Return the student details
+//     res.status(200).json({ student: user });
+//   } catch (error) {
+//     console.error("Error fetching student details:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 
-router.put("/updateStudent/:id", async (req, res) => {
-  const studentId = req.params.id;
-  const {
-    name,
-    phone,
-    qualification,
-    experience,
-    passing,
-    noticePeriod,
-    github,
-    portfolio,
-    resume,
-  } = req.body;
+// router.put("/updateStudent/:id", async (req, res) => {
+//   const studentId = req.params.id;
+//   const {
+//     name,
+//     phone,
+//     qualification,
+//     experience,
+//     passing,
+//     noticePeriod,
+//     github,
+//     portfolio,
+//     resume,
+//   } = req.body;
 
-  try {
-    const user = await User.findById(studentId);
-    if (!user) {
-      return res.status(404).json({ message: "Student not found" });
-    }
+//   try {
+//     const user = await User.findById(studentId);
+//     if (!user) {
+//       return res.status(404).json({ message: "Student not found" });
+//     }
 
-    user.name = name;
-    user.phone = phone;
-    user.qualification = qualification;
-    user.experience = experience;
-    user.passing = passing;
-    user.noticePeriod = noticePeriod;
-    user.github = github;
-    user.portfolio = portfolio;
-    user.resume = resume;
+//     user.name = name;
+//     user.phone = phone;
+//     user.qualification = qualification;
+//     user.experience = experience;
+//     user.passing = passing;
+//     user.noticePeriod = noticePeriod;
+//     user.github = github;
+//     user.portfolio = portfolio;
+//     user.resume = resume;
 
-    await user.save();
+//     await user.save();
 
-    res.status(200).json({ message: "Student details updated successfully" });
-  } catch (error) {
-    console.error("Error updating student details:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
+//     res.status(200).json({ message: "Student details updated successfully" });
+//   } catch (error) {
+//     console.error("Error updating student details:", error);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// });
 
 
 
@@ -148,7 +148,6 @@ router.post("/resetpassword", async (req, res) => {
       expiresIn: "1h",
     });
 
-    // Send reset token via email
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -184,19 +183,17 @@ router.post("/resetpassword", async (req, res) => {
 
 router.post("/savepassword", async (req, res) => {
   const { newPassword, resetToken } = req.body;
-  // Verify reset token
   try {
     const decoded = jwt.verify(resetToken, process.env.SECRET_KEY);
 
     const userId = decoded.Id;
-    const user = await User.findById(userId); // Use User instead of model
-
+    const user = await User.findById(userId); 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
     const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedNewPassword; // Use password instead of Password
+    user.password = hashedNewPassword; 
     await user.save();
 
     res.status(200).json({ message: "Password updated successfully" });

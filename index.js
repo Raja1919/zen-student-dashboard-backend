@@ -4,6 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const verifyToken = require("./middleware.js");
 const StudentRouter=require("./Routes/StudentRouter")
+const ProfileRouter=require("./Routes/ProfileRouter.js")
 const classRouter=require("./Routes/ClassRouter")
 const taskRouter=require("./Routes/TaskRouter")
 const leaveRouter=require("./Routes/LeaveRouter")
@@ -30,6 +31,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/student",StudentRouter)
+app.use("/api/profile",ProfileRouter)
 app.use("/api/class",verifyToken,classRouter)
 app.use("/api/task",verifyToken,taskRouter)
 app.use("/api/leave",verifyToken,leaveRouter)
