@@ -1,8 +1,6 @@
 const router = require("express").Router();
 const User = require("../Models/StudentSchema");
 
-
-
 router.get("/getAllStudents", async (req, res) => {
   try {
     const users = await User.find();
@@ -12,7 +10,6 @@ router.get("/getAllStudents", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 router.get("/getStudent/:id", async (req, res) => {
   const studentId = req.params.id;
@@ -33,17 +30,7 @@ router.get("/getStudent/:id", async (req, res) => {
 
 router.put("/updateStudent/:id", async (req, res) => {
   const studentId = req.params.id;
-  const {
-    name,
-    phone,
-    qualification,
-    experience,
-    passing,
-    noticePeriod,
-    github,
-    portfolio,
-    resume,
-  } = req.body;
+  const { name, phone } = req.body;
 
   try {
     const user = await User.findById(studentId);
@@ -53,13 +40,6 @@ router.put("/updateStudent/:id", async (req, res) => {
 
     user.name = name;
     user.phone = phone;
-    user.qualification = qualification;
-    user.experience = experience;
-    user.passing = passing;
-    user.noticePeriod = noticePeriod;
-    user.github = github;
-    user.portfolio = portfolio;
-    user.resume = resume;
 
     await user.save();
 
@@ -69,6 +49,5 @@ router.put("/updateStudent/:id", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 module.exports = router;
