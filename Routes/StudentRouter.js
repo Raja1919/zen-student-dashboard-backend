@@ -10,13 +10,6 @@ router.post("/register", async (req, res) => {
     email,
     password,
     phone,
-    qualification,
-    experience,
-    passing,
-    noticePeriod,
-    github,
-    portfolio,
-    resume,
   } = req.body;
   try {
     const user = await User.findOne({ email });
@@ -27,13 +20,6 @@ router.post("/register", async (req, res) => {
         email,
         password: hashedPassword,
         phone,
-        qualification,
-        experience,
-        passing,
-        noticePeriod,
-        github,
-        portfolio,
-        resume,
       });
       await newUser.save();
       return res.status(201).json({ message: "User created" });
